@@ -115,3 +115,20 @@ class temperatureSensor:
         return self.temperature
 
 
+if __name__ == "__main__":
+    evaporator = evaporatorActuator()
+    evaporator.setEvaporatorFans(33)
+
+    print(f"Evaporators condenser fans: {evaporator.evaporator_fans}")
+
+    cooler = coolingActuator()
+    cooler.setCooling(20)
+
+    print(f"Cooling compressor: {cooler.compressor}")
+    print(f"Cooling condenser fans: {cooler.condenser_fans}")
+
+    heater = heatingActuator()
+    heater.setHeating(55)
+
+    print(f"Heating resistor: {heater.resistor}")
+    print(f"Heating water_pump: {heater.water_pump}")
