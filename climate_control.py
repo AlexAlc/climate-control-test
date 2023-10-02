@@ -39,11 +39,25 @@ class ClimateControlUnit:
             self.heater.setHeating(0)               # Set min value
             self.evaporator.setEvaporatorFans(10)   # Set min value
 
+        # List for storing the status of each variable to show. Debugging pourpouses.
+        status_list = [
+            desired_temperature, 
+            self.cooler.compressor, 
+            self.cooler.condenser_fans, 
+            self.heater.resistor, 
+            self.heater.water_pump, 
+            self.evaporator.evaporator_fans, 
+            self.tempSensor.temperature
+        ]
+
+        return status_list
     
 if __name__ == "__main__":
 
     ccu = ClimateControlUnit()
 
+    # List for storing the records of each time step
+    registers = []
 
     # Simulation of the system for a range of time
     total_time = 60000  # miliseconds
@@ -51,4 +65,5 @@ if __name__ == "__main__":
     setpoint = 23       # Celsius
 
     for epoch in range(0, total_time, time_step):
-        ccu.update(setpoint)
+        results = ccu.update(setpoint)
+        print(results)
