@@ -32,10 +32,14 @@ class ClimateControlUnit:
 
         if controller_output < 0:
             # Cooling control
-            pass
+            self.cooler.setCooling(abs(controller_output))              # Set actuator value
+            self.evaporator.setEvaporatorFans(abs(controller_output))   # Set actuator value
+
         elif controller_output > 0:
             # Heating control
-            pass
+            self.heater.setHeating(abs(controller_output))              # Set actuator value
+            self.evaporator.setEvaporatorFans(abs(controller_output))   # Set actuator value
+
         else:
             # Stop actuation
             # TODO Add a timer or deadband to include hysteresis (don't jump from cooling to heating)
