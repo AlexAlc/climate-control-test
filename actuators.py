@@ -97,3 +97,21 @@ class heatingActuator:
         # Empty function to simulate a real call to hardware actuator or corresponding subsystem
         pass
         
+class temperatureSensor:
+    """
+    Simple simulation of a temperature sensor.
+    """
+
+    def __init__(self):
+        self.temperature = 20
+
+    def setTemperatureSensor(self, value):
+        # Placeholder for a real hardware sensor. Used only within simulation.
+        self.temperature = value
+
+
+    def readTemperatureSensor(self):
+        # Empty function to simulate a real call to hardware actuator or corresponding subsystem
+        return self.temperature
+
+
