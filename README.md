@@ -28,3 +28,13 @@ The heat subsystem is composed of the following components:
 
 ## Problem to solve
 Having a program with a control algorithm for this system. To display the solution, the program must return an output file (csv, json), showing a set of values of each element for an input temperature value. In addition, it must be possible to observe on screen the behavior of the system for a desired input temperature value, showing the corresponding value of the rest of the system.
+
+# Proposed solution
+
+- Controller: As a controller a PID is used. The output value is discriminated depending on the sign activating cooling or heating. Constants should be tuned to be in practice a PI controller since heat/temperature has such a high inertia. Also when using higher order or advanced control techniques such as state space feedback or LQR maximum power can't probably be achieved wasting too much energy, so a slower approach is preferred.
+
+- The power of the discrete elements is modeled as a fuzzy logic like manner. Insted a more simplier discretization of fixed step is used for the working range.
+
+- The algorithm resembles a software simulator for software in the loop, but physics equation of the model are not implemented here only ideal ones.
+
+- An Object Oriented design approach is used.
