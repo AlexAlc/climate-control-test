@@ -4,8 +4,8 @@ class evaporatorActuator:
     Simple simulation of an evaporator system which can create air with fans.
     """
 
-    def __init__(self):
-        self.evaporator_fans = 10   # Possible values between 10 (min) and 100 (max)
+    def __init__(self, init_fans=10):
+        self.evaporator_fans = init_fans    # Possible values between 10 (min) and 100 (max)
 
     def setEvaporatorFans(self, value):
         # Saturate values between working range
@@ -30,10 +30,10 @@ class coolingActuator:
     TODO: Future implementation using abstract class with generic structure common to cooling and heating and create derived class using inheritance.
     """
 
-    def __init__(self):
+    def __init__(self, init_condenser=0):
         self.compressor_states = ['OFF','MIN','MED','MAX']  # Different states of operation possible for compressor
         self.compressor = self.compressor_states[0]         # Current assigned state of operation
-        self.condenser_fans = 0                             # Fans of cooling stage. Possible values between 0 (min) and 100 (max)
+        self.condenser_fans = init_condenser                # Fans of cooling stage. Possible values between 0 (min) and 100 (max)
 
     def setCooling(self, value):
         # Saturate values between working range
@@ -67,10 +67,10 @@ class heatingActuator:
     TODO: Future implementation using abstract class with generic structure common to cooling and heating and create derived class using inheritance.
     """
 
-    def __init__(self):
+    def __init__(self, init_pump=0):
         self.resistor_states = ['OFF','MIN','MED','MAX']    # Different states of operation possible for resistor
         self.resistor = self.resistor_states[0]             # Current assigned state of operation
-        self.water_pump = 0                                 # Pump of heating stage. Possible values between 0 (min) and 100 (max)
+        self.water_pump = init_pump                         # Pump of heating stage. Possible values between 0 (min) and 100 (max)
 
     def setHeating(self, value):
         # Saturate values between working range
@@ -102,8 +102,8 @@ class temperatureSensor:
     Simple simulation of a temperature sensor.
     """
 
-    def __init__(self):
-        self.temperature = 20
+    def __init__(self, init_temp=20):
+        self.temperature = init_temp
 
     def setTemperatureSensor(self, value):
         # Placeholder for a real hardware sensor. Used only within simulation.
@@ -116,18 +116,18 @@ class temperatureSensor:
 
 
 if __name__ == "__main__":
-    evaporator = evaporatorActuator()
+    evaporator = evaporatorActuator(0)
     evaporator.setEvaporatorFans(33)
 
     print(f"Evaporators condenser fans: {evaporator.evaporator_fans}")
 
-    cooler = coolingActuator()
+    cooler = coolingActuator(0)
     cooler.setCooling(20)
 
     print(f"Cooling compressor: {cooler.compressor}")
     print(f"Cooling condenser fans: {cooler.condenser_fans}")
 
-    heater = heatingActuator()
+    heater = heatingActuator(0)
     heater.setHeating(55)
 
     print(f"Heating resistor: {heater.resistor}")
