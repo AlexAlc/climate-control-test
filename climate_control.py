@@ -3,6 +3,10 @@ from actuators import coolingActuator
 from actuators import heatingActuator
 from actuators import temperatureSensor
 
+import csv
+
+log_file = 'climate_log.csv'
+
 class ClimateControlUnit:
     """
     Climate control unit including a sensor to read the ambient temperature, a cooling subsystem, a heating subsystem and evaporator fans.
@@ -39,18 +43,18 @@ class ClimateControlUnit:
             self.heater.setHeating(0)               # Set min value
             self.evaporator.setEvaporatorFans(10)   # Set min value
 
-        # List for storing the status of each variable to show. Debugging pourpouses.
-        status_list = [
-            desired_temperature, 
-            self.cooler.compressor, 
-            self.cooler.condenser_fans, 
-            self.heater.resistor, 
-            self.heater.water_pump, 
-            self.evaporator.evaporator_fans, 
-            self.tempSensor.temperature
-        ]
+        # Dict for storing the status of each variable to show. Debugging pourpouses.
+        status_dict = {
+            "desired_temperature": desired_temperature, 
+            "compressor": self.cooler.compressor, 
+            "condenser_fans": self.cooler.condenser_fans, 
+            "resistor": self.heater.resistor, 
+            "water_pump": self.heater.water_pump, 
+            "evaporator_fans": self.evaporator.evaporator_fans, 
+            "temperature": self.tempSensor.temperature
+        }
 
-        return status_list
+        return status_dict
     
 if __name__ == "__main__":
 
@@ -66,4 +70,14 @@ if __name__ == "__main__":
 
     for epoch in range(0, total_time, time_step):
         results = ccu.update(setpoint)
-        print(results)
+        results.update({"time": epoch})
+        registers.append(results)
+        
+    # Save the results of the simulation on a CSV file
+    with open(log_file, mode="w", newline="") as csv_file:
+        fields = list(registers[0].keys())
+        writer = csv.DictWriter(csv_file, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(registers)
+
+    print(f"Complete simulation. Results saved in {log_file}")
