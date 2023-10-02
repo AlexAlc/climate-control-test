@@ -2,6 +2,7 @@ from actuators import evaporatorActuator
 from actuators import coolingActuator
 from actuators import heatingActuator
 from actuators import temperatureSensor
+from simple_pid.pid import PID
 
 import csv
 
@@ -24,11 +25,10 @@ class ClimateControlUnit:
         # Read ambient temperature from sensor
         current_temperature = self.tempSensor.readTemperatureSensor()
 
-        # Calculates the temperature difference
-        temperature_difference = desired_temperature - current_temperature
-
-        # Controller logic
-        controller_output = 0
+        # Controller logic. Tune to specification.
+        pid = PID(5, 0.01, 0.1, setpoint=desired_temperature)
+        pid.output_limits = (0, 100)
+        controller_output = pid(current_temperature)
 
         if controller_output < 0:
             # Cooling control
