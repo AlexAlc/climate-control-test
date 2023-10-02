@@ -1,3 +1,5 @@
+Solution in climate_control.py file. (actuators.py auxiliary file). Results of simulation saved in climate_log.csv.
+
 # Introduction
 Test for a climate control flow using heating and cooling to monitor desired ambient temperature.
 
