@@ -39,3 +39,16 @@ class ClimateControlUnit:
             self.heater.setHeating(0)               # Set min value
             self.evaporator.setEvaporatorFans(10)   # Set min value
 
+    
+if __name__ == "__main__":
+
+    ccu = ClimateControlUnit()
+
+
+    # Simulation of the system for a range of time
+    total_time = 60000  # miliseconds
+    time_step = 1000    # miliseconds
+    setpoint = 23       # Celsius
+
+    for epoch in range(0, total_time, time_step):
+        ccu.update(setpoint)
