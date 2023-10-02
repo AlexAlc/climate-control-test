@@ -6,15 +6,22 @@ class evaporatorActuator:
 
     def __init__(self, init_fans=10):
         self.evaporator_fans = init_fans    # Possible values between 10 (min) and 100 (max)
+        self.fan_max = 100                  # Maximun alowed value
+        self.fan_min = 10                   # Minimum alowed value
+
+    def saturate(self, val):
+        if val < self.fan_min:
+            sat_val = self.fan_min
+        elif val > self.fan_max:
+            sat_val = self.fan_max
+        else:
+            sat_val = val
+        
+        return sat_val
 
     def setEvaporatorFans(self, value):
         # Saturate values between working range
-        if value < 10:
-            self.evaporator_fans = 10
-        elif value > 100:
-            self.evaporator_fans = 100
-        else:
-            self.evaporator_fans = value
+        self.evaporator_fans = self.saturate(value)
 
         # After setting up, send actual command to set hardware working state
         self.placeholderEvaporatorFansHW()
@@ -34,15 +41,22 @@ class coolingActuator:
         self.compressor_states = ['OFF','MIN','MED','MAX']  # Different states of operation possible for compressor
         self.compressor = self.compressor_states[0]         # Current assigned state of operation
         self.condenser_fans = init_condenser                # Fans of cooling stage. Possible values between 0 (min) and 100 (max)
+        self.fan_max = 100                                  # Maximun alowed value
+        self.fan_min = 0                                    # Minimum alowed value
+
+    def saturate(self, val):
+        if val < self.fan_min:
+            sat_val = self.fan_min
+        elif val > self.fan_max:
+            sat_val = self.fan_max
+        else:
+            sat_val = val
+        
+        return sat_val
 
     def setCooling(self, value):
         # Saturate values between working range
-        if value < 0:
-            self.condenser_fans = 0
-        elif value > 100:
-            self.condenser_fans = 100
-        else:
-            self.condenser_fans = value
+        self.condenser_fans = self.saturate(value)
 
         # Calculate corresponding working mode as discretization of whole range.
         fuzzy_value = 1 + self.condenser_fans / (100 / 3);
@@ -71,15 +85,22 @@ class heatingActuator:
         self.resistor_states = ['OFF','MIN','MED','MAX']    # Different states of operation possible for resistor
         self.resistor = self.resistor_states[0]             # Current assigned state of operation
         self.water_pump = init_pump                         # Pump of heating stage. Possible values between 0 (min) and 100 (max)
+        self.pump_max = 100                                 # Maximun alowed value
+        self.pump_min = 0                                   # Minimum alowed value
+
+    def saturate(self, val):
+        if val < self.pump_min:
+            sat_val = self.pump_min
+        elif val > self.pump_max:
+            sat_val = self.pump_max
+        else:
+            sat_val = val
+        
+        return sat_val
 
     def setHeating(self, value):
         # Saturate values between working range
-        if value < 0:
-            self.water_pump = 0
-        elif value > 100:
-            self.water_pump = 100
-        else:
-            self.water_pump = value
+        self.water_pump = self.saturate(value)
 
         # Calculate corresponding working mode as discretization of whole range.
         fuzzy_value = 1 + self.water_pump / (100 / 3);
@@ -103,11 +124,23 @@ class temperatureSensor:
     """
 
     def __init__(self, init_temp=20):
-        self.temperature = init_temp
+        self.temperature = init_temp    # Sensed temperature
+        self.temp_max = 100             # Maximun alowed value
+        self.temp_min = -100            # Minimum alowed value
+
+    def saturate(self, val):
+        if val < self.temp_min:
+            sat_val = self.temp_min
+        elif val > self.temp_max:
+            sat_val = self.temp_max
+        else:
+            sat_val = val
+        
+        return sat_val
 
     def setTemperatureSensor(self, value):
         # Placeholder for a real hardware sensor. Used only within simulation.
-        self.temperature = value
+        self.temperature = self.saturate(value)
 
 
     def readTemperatureSensor(self):
